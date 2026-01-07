@@ -1,94 +1,100 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>King Kong Logistics | Versión Clara</title>
+    <title>King Kong Logistics | Los Angeles</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Oswald y Roboto (Misma identidad, diferente contexto) -->
+    <!-- Google Fonts: Oswald (Headings) and Roboto (Body) -->
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <!-- Iconos Lucide -->
+    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
-        /* Tipografía de marca */
+        /* Brand Typography */
         h1, h2, h3, h4, h5, .brand-font { font-family: 'Oswald', sans-serif; }
         body { font-family: 'Roboto', sans-serif; }
 
-        /* Colores Personalizados - Tema Claro */
+        /* Custom Colors - Light Theme */
         .text-kong-pink { color: #ec4899; }
         .bg-kong-pink { background-color: #ec4899; }
-        .bg-kong-pink-light { background-color: #fdf2f8; } /* Rosa muy pálido para fondos */
+        .bg-kong-pink-light { background-color: #fdf2f8; }
         .hover-bg-kong-pink:hover { background-color: #be185d; }
         .border-kong-pink { border-color: #ec4899; }
 
-        /* Animaciones suaves */
+        /* Animations */
         .fade-in-up {
             animation: fadeInUp 0.8s ease-out forwards;
             opacity: 0;
             transform: translateY(20px);
         }
         
-        .delay-100 { animation-delay: 0.1s; }
-        .delay-200 { animation-delay: 0.2s; }
-        .delay-300 { animation-delay: 0.3s; }
-
         @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Hero Split: La imagen ocupará solo la mitad derecha como fondo */
+        /* Hero Split Background */
         .hero-split-bg {
             position: absolute;
             top: 0;
             right: 0;
-            width: 50%; /* Ocupa la mitad derecha en pantallas grandes */
+            width: 50%;
             height: 100%;
+            /* Make sure to have your kingkong.jpg in the img folder */
             background-image: url('img/kinkong.jpg');
             background-size: cover;
             background-position: center;
             z-index: 0;
-            clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%); /* Corte diagonal sutil para dinamismo */
+            clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%);
         }
 
         @media (max-width: 768px) {
             .hero-split-bg {
                 width: 100%;
-                height: 50%; /* En móviles, la imagen va arriba o abajo según diseño, aquí la pondremos como fondo tenue o arriba */
-                opacity: 0.1; /* En móvil la hacemos sutil para que el texto se lea */
+                height: 50%;
+                opacity: 0.1;
                 clip-path: none;
             }
         }
+
+        /* Modal Styles */
+        #quoteModal {
+            transition: opacity 0.3s ease;
+        }
+        #quoteModal.hidden {
+            pointer-events: none;
+            opacity: 0;
+        }
+        #quoteModal:not(.hidden) {
+            pointer-events: auto;
+            opacity: 1;
+        }
     </style>
 </head>
-<body class="bg-white text-gray-800 font-sans">
+<body class="bg-white text-gray-800 font-sans relative">
 
-    <!-- Navbar: Blanco y limpio -->
+    <!-- Navbar -->
     <nav class="fixed w-full z-50 bg-white/95 backdrop-blur-md shadow-sm transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer">
-                    <!-- Aquí iría tu logo real: <img src="img/logo.png" class="h-10 w-auto"> -->
-                    <div class="bg-kong-pink text-white p-2 rounded-lg">
-                        <i data-lucide="truck" class="h-6 w-6"></i>
-                    </div>
-                    <span class="brand-font text-2xl font-bold tracking-wide text-gray-900">KING KONG <span class="text-kong-pink">LOGISTICS</span></span>
+                    <img src="img/kingkong.png" alt="King Kong Logo" class="h-12 w-auto object-contain rounded-md">
+                    
+                    <span class="brand-font text-2xl font-bold tracking-wide text-gray-900">KING KONG <span class="text-kong-pink">MOVING</span></span>
                 </div>
                 
-                <!-- Links Desktop -->
+                <!-- Desktop Links -->
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-8">
-                        <a href="#inicio" class="text-gray-600 hover:text-kong-pink font-medium transition-colors">Inicio</a>
-                        <a href="#nosotros" class="text-gray-600 hover:text-kong-pink font-medium transition-colors">Quiénes Somos</a>
-                        <a href="#servicios" class="text-gray-600 hover:text-kong-pink font-medium transition-colors">Servicios</a>
-                        <a href="#contacto" class="px-5 py-2.5 rounded-full bg-kong-pink text-white font-bold shadow-lg shadow-pink-200 hover:shadow-pink-400 hover:-translate-y-0.5 transition-all">
-                            Cotizar Ahora
-                        </a>
+                        <a href="#home" class="text-gray-600 hover:text-kong-pink font-medium transition-colors">Home</a>
+                        <a href="#about" class="text-gray-600 hover:text-kong-pink font-medium transition-colors">About Us</a>
+                        <a href="#services" class="text-gray-600 hover:text-kong-pink font-medium transition-colors">Services</a>
+                        <a href="#location" class="text-gray-600 hover:text-kong-pink font-medium transition-colors">Location</a>
+                        <button onclick="openModal()" class="px-5 py-2.5 rounded-full bg-kong-pink text-white font-bold shadow-lg shadow-pink-200 hover:shadow-pink-400 hover:-translate-y-0.5 transition-all">
+                            Request Online Quote
+                        </button>
                     </div>
                 </div>
 
@@ -103,203 +109,380 @@
         <!-- Mobile Menu -->
         <div class="hidden md:hidden bg-white border-t" id="mobile-menu">
             <div class="px-4 pt-2 pb-4 space-y-1 shadow-lg">
-                <a href="#inicio" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-kong-pink hover:bg-pink-50 rounded-md">Inicio</a>
-                <a href="#nosotros" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-kong-pink hover:bg-pink-50 rounded-md">Quiénes Somos</a>
-                <a href="#servicios" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-kong-pink hover:bg-pink-50 rounded-md">Servicios</a>
-                <a href="#contacto" class="block px-3 py-2 text-base font-bold text-kong-pink hover:bg-pink-50 rounded-md">Cotizar</a>
+                <a href="#home" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-kong-pink hover:bg-pink-50 rounded-md">Home</a>
+                <a href="#about" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-kong-pink hover:bg-pink-50 rounded-md">About Us</a>
+                <a href="#services" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-kong-pink hover:bg-pink-50 rounded-md">Services</a>
+                <a href="#location" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-kong-pink hover:bg-pink-50 rounded-md">Location</a>
+                <button onclick="openModal()" class="w-full text-left block px-3 py-2 text-base font-bold text-kong-pink hover:bg-pink-50 rounded-md">Request Quote</button>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section: Diseño Split (Mitad Texto / Mitad Imagen Fondo) -->
-    <header id="inicio" class="relative min-h-screen flex items-center pt-20 overflow-hidden bg-white">
-        <!-- Fondo de imagen posicionado a la derecha -->
+    <!-- Hero Section -->
+    <header id="home" class="relative min-h-screen flex items-center pt-20 overflow-hidden bg-white">
         <div class="hero-split-bg"></div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center h-full">
-                <!-- Columna Izquierda: Contenido -->
+                <!-- Left Column: Content -->
                 <div class="fade-in-up py-12 md:py-0">
                     <div class="inline-block px-4 py-1 mb-4 bg-pink-100 text-kong-pink font-bold rounded-full text-sm uppercase tracking-wider border border-pink-200">
-                        Logística de Confianza
+                        Los Angeles' Trusted Movers
                     </div>
                     <h1 class="text-5xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">
-                        MOVEMOS TU <br>
+                        WE MOVE YOUR <br>
                         <span class="text-kong-pink relative inline-block">
-                            MUNDO
-                            <!-- Subrayado decorativo -->
+                            WORLD
                             <svg class="absolute w-full h-3 -bottom-1 left-0 text-pink-200 -z-10" viewBox="0 0 100 10" preserveAspectRatio="none">
                                 <path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="8" fill="none" />
                             </svg>
                         </span>
                     </h1>
                     <p class="text-xl text-gray-600 mb-8 max-w-lg font-light leading-relaxed">
-                        Expertos en transporte pesado, mudanzas y logística integral. Tu carga segura, a tiempo y con el mejor servicio.
+                        Expert movers in Los Angeles. From studio apartments to large corporate offices, we handle your belongings with strength and care.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="#contacto" class="px-8 py-4 bg-gray-900 text-white font-bold rounded-lg shadow-xl hover:bg-gray-800 transition-transform transform hover:-translate-y-1 flex items-center justify-center gap-2">
-                            Ver Servicios <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        <button onclick="openModal()" class="px-8 py-4 bg-gray-900 text-white font-bold rounded-lg shadow-xl hover:bg-gray-800 transition-transform transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                            Get a Free Quote <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </button>
+                        
+                        <!-- WhatsApp Direct Link -->
+                        <!-- REPLACE NUMBER: Format is CountryCode+Number (e.g. 15551234567) -->
+                        <a href="https://wa.me/13239860554" target="_blank" class="px-8 py-4 border-2 border-gray-200 text-gray-700 font-bold rounded-lg hover:border-green-500 hover:text-green-600 transition-colors flex items-center justify-center gap-2">
+                            <i data-lucide="message-circle" class="w-5 h-5"></i> WhatsApp Us
                         </a>
-                        <div class="flex items-center gap-4 px-4 py-2 bg-gray-50 rounded-lg border border-gray-100">
-                            <div class="flex -space-x-2">
-                                <img class="w-10 h-10 rounded-full border-2 border-white" src="https://i.pravatar.cc/100?img=1" alt="">
-                                <img class="w-10 h-10 rounded-full border-2 border-white" src="https://i.pravatar.cc/100?img=2" alt="">
-                                <img class="w-10 h-10 rounded-full border-2 border-white" src="https://i.pravatar.cc/100?img=3" alt="">
-                            </div>
-                            <div class="text-sm font-medium text-gray-600">
-                                <span class="text-kong-pink font-bold">+500</span> Clientes felices
-                            </div>
-                        </div>
                     </div>
                 </div>
                 
-                <!-- Columna Derecha: Vacía para dejar ver la imagen de fondo -->
-                <div class="hidden md:block h-full">
-                    <!-- Espacio reservado para que se luzca la imagen del camión -->
-                </div>
+                <!-- Right Column: Empty for background image -->
+                <div class="hidden md:block h-full"></div>
             </div>
         </div>
     </header>
 
-    <!-- Sección Quiénes Somos (Nuevo) -->
-    <section id="nosotros" class="py-24 bg-white relative">
+    <!-- About Us Section -->
+    <section id="about" class="py-24 bg-white relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <!-- Imagen con diseño gráfico -->
+                <!-- Image -->
                 <div class="relative group">
                     <div class="absolute -inset-4 bg-kong-pink/20 rounded-2xl transform rotate-3 transition-transform group-hover:rotate-6"></div>
-                    <img src="img/servicio.jpg" alt="Equipo King Kong" class="relative rounded-2xl shadow-2xl w-full object-cover h-[500px] grayscale group-hover:grayscale-0 transition-all duration-500">
+                    <img src="img/servicio.jpg" alt="King Kong Team" class="relative rounded-2xl shadow-2xl w-full object-cover h-[500px] grayscale group-hover:grayscale-0 transition-all duration-500">
                     <div class="absolute bottom-8 left-8 bg-white p-6 rounded-lg shadow-xl max-w-xs animate-pulse border-l-4 border-kong-pink">
-                        <p class="text-4xl font-bold text-kong-pink brand-font">10+</p>
-                        <p class="text-gray-600 text-sm font-medium uppercase tracking-wide">Años de experiencia en carretera</p>
+                        <p class="text-4xl font-bold text-kong-pink brand-font">LA</p>
+                        <p class="text-gray-600 text-sm font-medium uppercase tracking-wide">Based in Los Angeles</p>
                     </div>
                 </div>
                 
-                <!-- Contenido -->
+                <!-- Content -->
                 <div>
-                    <h2 class="text-sm font-bold text-kong-pink uppercase tracking-widest mb-2">Sobre Nosotros</h2>
-                    <h3 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">Más que transporte, somos <span class="text-kong-pink">fuerza y seguridad.</span></h3>
+                    <h2 class="text-sm font-bold text-kong-pink uppercase tracking-widest mb-2">About Us</h2>
+                    <h3 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">More than transport, we are <span class="text-kong-pink">strength & security.</span></h3>
                     <p class="text-gray-600 text-lg mb-6 leading-relaxed">
-                        En King Kong Logistics nacimos con una misión clara: hacer que lo pesado parezca ligero. Somos una empresa dedicada a solucionar los retos logísticos más complejos con una flota moderna y un equipo humano inquebrantable.
+                        At King Kong Moving, we were born with a clear mission: to make heavy lifting feel light. We are a proud Los Angeles-based company dedicated to solving the most complex logistical challenges with a modern fleet and an unbreakable team.
                     </p>
                     <ul class="space-y-4 mb-8">
                         <li class="flex items-center gap-3">
                             <div class="bg-pink-100 p-1 rounded-full">
                                 <i data-lucide="check" class="text-kong-pink w-4 h-4"></i>
                             </div>
-                            <span class="text-gray-700 font-medium">Unidades con rastreo GPS 24/7</span>
+                            <span class="text-gray-700 font-medium">GPS tracked units 24/7</span>
                         </li>
                         <li class="flex items-center gap-3">
                             <div class="bg-pink-100 p-1 rounded-full">
                                 <i data-lucide="check" class="text-kong-pink w-4 h-4"></i>
                             </div>
-                            <span class="text-gray-700 font-medium">Personal certificado y de confianza</span>
+                            <span class="text-gray-700 font-medium">Certified and trusted staff</span>
                         </li>
-                        <li class="flex items-center gap-3">
+                        <!-- Removed Insurance line as requested -->
+                         <li class="flex items-center gap-3">
                             <div class="bg-pink-100 p-1 rounded-full">
                                 <i data-lucide="check" class="text-kong-pink w-4 h-4"></i>
                             </div>
-                            <span class="text-gray-700 font-medium">Seguro de carga incluido</span>
+                            <span class="text-gray-700 font-medium">Local & Long Distance</span>
                         </li>
                     </ul>
-                    <a href="#" class="inline-flex items-center text-kong-pink font-bold border-b-2 border-kong-pink pb-1 hover:text-pink-700 hover:border-pink-700 transition-colors">
-                        Conoce a nuestro equipo <i data-lucide="arrow-right" class="ml-2 w-4 h-4"></i>
-                    </a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Servicios: Tarjetas limpias con efecto hover -->
-    <section id="servicios" class="py-24 bg-gray-50">
+    <!-- Services Section -->
+    <section id="services" class="py-24 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4 brand-font">Nuestras Soluciones</h2>
-                <p class="text-gray-600 text-lg">Ofrecemos un abanico completo de servicios diseñados para adaptarse a tus necesidades, ya sea una caja o una casa entera.</p>
+                <h2 class="text-4xl font-bold text-gray-900 mb-4 brand-font">Our Services</h2>
+                <p class="text-gray-600 text-lg">Comprehensive solutions for every moving need in Los Angeles and beyond.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Card 1 -->
-                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 group border border-gray-100 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 p-4 opacity-10 transform translate-x-4 -translate-y-4">
-                        <i data-lucide="truck" class="w-24 h-24 text-kong-pink"></i>
+            <!-- 5 Services Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- 1. Moving Service -->
+                <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group">
+                    <div class="h-48 bg-gray-200 overflow-hidden relative">
+                         <!-- Placeholder Image for Moving -->
+                        <img src="img/moving.jpg" alt="Moving Service" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     </div>
-                    <div class="w-16 h-16 bg-pink-50 rounded-xl flex items-center justify-center mb-6 text-kong-pink group-hover:bg-kong-pink group-hover:text-white transition-colors relative z-10">
-                        <i data-lucide="truck" class="w-8 h-8"></i>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2 brand-font">Moving Service</h3>
+                        <p class="text-gray-600 text-sm mb-4">Full-service relocation for any distance. We handle the heavy lifting so you don't have to.</p>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-3 brand-font relative z-10">Fletes Nacionales</h3>
-                    <p class="text-gray-600 leading-relaxed mb-6 relative z-10">Cobertura total en todo el país. Llevamos tu mercancía de punto A a punto B con la máxima eficiencia.</p>
-                    <a href="#" class="inline-flex items-center text-kong-pink font-bold text-sm hover:underline relative z-10">Saber más <i data-lucide="chevron-right" class="w-4 h-4 ml-1"></i></a>
                 </div>
 
-                <!-- Card 2 -->
-                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 group border border-gray-100 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 p-4 opacity-10 transform translate-x-4 -translate-y-4">
-                        <i data-lucide="home" class="w-24 h-24 text-kong-pink"></i>
+                <!-- 2. Packing Service -->
+                <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group">
+                    <div class="h-48 bg-gray-200 overflow-hidden relative">
+                        <!-- Placeholder Image for Packing -->
+                        <img src="img/packing.jpg" alt="Packing Service" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     </div>
-                    <div class="w-16 h-16 bg-pink-50 rounded-xl flex items-center justify-center mb-6 text-kong-pink group-hover:bg-kong-pink group-hover:text-white transition-colors relative z-10">
-                        <i data-lucide="home" class="w-8 h-8"></i>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2 brand-font">Packing Service</h3>
+                        <p class="text-gray-600 text-sm mb-4">Professional packing to ensure your valuables are safe. We bring the boxes and materials.</p>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-3 brand-font relative z-10">Mudanzas Premium</h3>
-                    <p class="text-gray-600 leading-relaxed mb-6 relative z-10">Servicio "guante blanco" para tu hogar. Empacamos, cargamos y acomodamos todo por ti.</p>
-                    <a href="#" class="inline-flex items-center text-kong-pink font-bold text-sm hover:underline relative z-10">Saber más <i data-lucide="chevron-right" class="w-4 h-4 ml-1"></i></a>
                 </div>
 
-                <!-- Card 3 -->
-                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 group border border-gray-100 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 p-4 opacity-10 transform translate-x-4 -translate-y-4">
-                        <i data-lucide="package-check" class="w-24 h-24 text-kong-pink"></i>
+                <!-- 3. House Staging Service -->
+                <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group">
+                    <div class="h-48 bg-gray-200 overflow-hidden relative">
+                        <!-- Placeholder Image for Staging -->
+                        <img src="img/house.jpg" alt="House Staging" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     </div>
-                    <div class="w-16 h-16 bg-pink-50 rounded-xl flex items-center justify-center mb-6 text-kong-pink group-hover:bg-kong-pink group-hover:text-white transition-colors relative z-10">
-                        <i data-lucide="package-check" class="w-8 h-8"></i>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2 brand-font">House Staging Service</h3>
+                        <p class="text-gray-600 text-sm mb-4">Assisting realtors and homeowners in arranging furniture to make properties look their best.</p>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-3 brand-font relative z-10">Logística Empresarial</h3>
-                    <p class="text-gray-600 leading-relaxed mb-6 relative z-10">Soluciones B2B para distribución regular, última milla y movimientos de oficina.</p>
-                    <a href="#" class="inline-flex items-center text-kong-pink font-bold text-sm hover:underline relative z-10">Saber más <i data-lucide="chevron-right" class="w-4 h-4 ml-1"></i></a>
                 </div>
+
+                <!-- 4. Furniture Assembly -->
+                <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group">
+                    <div class="h-48 bg-gray-200 overflow-hidden relative">
+                        <!-- Placeholder Image for Assembly -->
+                        <img src="img/furniture.jpg" alt="Furniture Assembly" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2 brand-font">Furniture Assembly</h3>
+                        <p class="text-gray-600 text-sm mb-4">Disassembly and reassembly of complex furniture pieces like beds, desks, and shelving units.</p>
+                    </div>
+                </div>
+
+                <!-- 5. House, Apartment, Office -->
+                <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group">
+                    <div class="h-48 bg-gray-200 overflow-hidden relative">
+                        <!-- Placeholder Image for Residential/Office -->
+                        <img src="img/all.jpg" alt="Apartment and Office" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2 brand-font">House, Apartment & Office</h3>
+                        <p class="text-gray-600 text-sm mb-4">Specialized logistics for any property type. We handle stairs, elevators, and tight spaces with ease.</p>
+                    </div>
+                </div>
+
             </div>
         </div>
+    </section>
+
+    <!-- Location Section (Google Maps) -->
+    <section id="location" class="py-16 bg-white">
+         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-gray-900 brand-font">Our Location</h2>
+                <p class="text-gray-600">Serving the Greater Los Angeles Area</p>
+                <!-- Address Placeholder based on card -->
+                <p class="text-kong-pink font-bold mt-2">
+                    <i data-lucide="map-pin" class="inline w-4 h-4 mr-1"></i> 
+                    <!-- PLEASE UPDATE THIS ADDRESS with the one on your card -->
+                    1306 4th Ave, Los Angeles, CA 90019
+                </p>
+                <a href="https://maps.app.goo.gl/S87JEhM3hsqEo3VH7" target="_blank" class="inline-flex items-center gap-2 mt-4 text-sm font-bold text-kong-pink hover:underline">
+                    Open in Google Maps App <i data-lucide="external-link" class="w-4 h-4"></i>
+                </a>
+            </div>
+            
+            <div class="w-full h-96 bg-gray-200 rounded-xl overflow-hidden shadow-lg border border-gray-100">
+                <!-- Google Maps Embed -->
+                <!-- Replace 'src' with the embed link of your specific address from Google Maps -->
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d423286.27404345275!2d-118.69192047471653!3d34.02016130939095!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2c75ddc27da13%3A0xe22fdf6f254608f4!2sLos%20Angeles%2C%20CA%2C%20USA!5e0!3m2!1sen!2smx!4v1709320000000!5m2!1sen!2smx" 
+                    width="100%" 
+                    height="100%" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy">
+                </iframe>
+            </div>
+         </div>
     </section>
 
     <!-- Banner CTA -->
-    <section id="contacto" class="bg-kong-pink py-16 relative overflow-hidden">
+    <section class="bg-kong-pink py-16 relative overflow-hidden">
         <div class="absolute top-0 right-0 opacity-10">
             <i data-lucide="truck" class="w-96 h-96 text-white transform -rotate-12 translate-x-20 -translate-y-20"></i>
         </div>
         <div class="max-w-5xl mx-auto px-4 text-center relative z-10">
-            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6 brand-font">¿Listo para moverte sin preocupaciones?</h2>
-            <p class="text-white/90 text-xl mb-8 max-w-2xl mx-auto">Solicita tu presupuesto sin compromiso hoy mismo y descubre por qué somos los reyes del camino.</p>
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6 brand-font">Ready to move without stress?</h2>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <button class="bg-white text-kong-pink font-bold py-4 px-8 rounded-full shadow-lg hover:bg-gray-100 transition-colors flex items-center justify-center gap-2">
-                    <i data-lucide="phone-call" class="w-5 h-5"></i> 55 1234 5678
-                </button>
-                <button class="bg-gray-900 text-white font-bold py-4 px-8 rounded-full shadow-lg hover:bg-gray-800 transition-colors">
-                    Solicitar Cotización Online
+                
+                <!-- Contact Number Link -->
+                <!-- REPLACE NUMBER -->
+                
+                <a href="tel:+13236411395" class="bg-white text-kong-pink font-bold py-4 px-8 rounded-full shadow-lg hover:bg-gray-100 transition-colors flex items-center justify-center gap-2">
+                    <i data-lucide="phone-call" class="w-5 h-5"></i> (323) 641-1395
+                </a>
+                <a href="tel:+13239860554" class="bg-white text-kong-pink font-bold py-4 px-8 rounded-full shadow-lg hover:bg-gray-100 transition-colors flex items-center justify-center gap-2">
+                    <i data-lucide="phone-call" class="w-5 h-5"></i> (323) 986-0554
+                </a>
+                
+                <button onclick="openModal()" class="bg-gray-900 text-white font-bold py-4 px-8 rounded-full shadow-lg hover:bg-gray-800 transition-colors">
+                    Request Online Quote
                 </button>
             </div>
         </div>
     </section>
 
-    <!-- Footer Simple -->
+    <!-- Footer -->
     <footer class="bg-white border-t border-gray-200 py-12">
         <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="flex items-center gap-2">
-                <i data-lucide="truck" class="h-6 w-6 text-kong-pink"></i>
-                <span class="font-bold text-xl text-gray-900 brand-font">KING KONG LOGISTICS</span>
+                <img src="img/kingkong.png" alt="King Kong Logo" class="h-12 w-auto object-contain rounded-md">
+                    
+                <span class="font-bold text-xl text-gray-900 brand-font">KING KONG MOVING</span>
             </div>
             <div class="text-gray-500 text-sm">
-                &copy; 2024 King Kong Logistics. Todos los derechos reservados.
+                &copy; 2024 King Kong Moving. All rights reserved.
             </div>
+            
+            <!-- Social Media Links -->
             <div class="flex gap-4">
-                <a href="#" class="text-gray-400 hover:text-kong-pink transition-colors"><i data-lucide="facebook" class="w-5 h-5"></i></a>
-                <a href="#" class="text-gray-400 hover:text-kong-pink transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a>
-                <a href="#" class="text-gray-400 hover:text-kong-pink transition-colors"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+                <!-- WhatsApp Link -->
+                <!-- REPLACE 'href' with your WhatsApp Link: https://wa.me/YOURNUMBER -->
+                <a href="https://wa.me/13239860554" target="_blank" class="text-gray-400 hover:text-green-500 transition-colors" title="WhatsApp">
+                    <i data-lucide="message-circle" class="w-6 h-6"></i>
+                </a>
+
+                <!-- Facebook Link -->
+                <!-- REPLACE 'href' with your Facebook Page URL -->
+                <a href="https://www.facebook.com/" target="_blank" class="text-gray-400 hover:text-blue-600 transition-colors" title="Facebook">
+                    <i data-lucide="facebook" class="w-6 h-6"></i>
+                </a>
+
+                <!-- Instagram Link -->
+                <!-- REPLACE 'href' with your Instagram Profile URL -->
+                <a href="https://www.instagram.com/" target="_blank" class="text-gray-400 hover:text-pink-600 transition-colors" title="Instagram">
+                    <i data-lucide="instagram" class="w-6 h-6"></i>
+                </a>
             </div>
         </div>
     </footer>
 
+    <!-- MODAL POPUP FOR QUOTE -->
+    <div id="quoteModal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm hidden p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden relative animate-[fadeIn_0.3s_ease-out]">
+            <!-- Close Button -->
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition-colors">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+
+            <!-- Modal Header -->
+            <div class="bg-gray-50 p-6 border-b border-gray-100">
+                <h3 class="text-2xl font-bold text-gray-900 brand-font">Request Quote</h3>
+                <p class="text-sm text-gray-500">Fill out this form and we will reply via WhatsApp.</p>
+            </div>
+
+            <!-- Modal Body (Form) -->
+            <div class="p-6">
+                <form id="whatsappForm" onsubmit="sendToWhatsapp(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Full Name</label>
+                        <input type="text" id="name" required class="w-full bg-gray-50 border border-gray-300 rounded p-3 focus:outline-none focus:border-kong-pink focus:ring-1 focus:ring-kong-pink transition-colors" placeholder="John Doe">
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Pick up Location</label>
+                            <input type="text" id="origin" required class="w-full bg-gray-50 border border-gray-300 rounded p-3 focus:outline-none focus:border-kong-pink transition-colors" placeholder="City/Zip">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Drop off Location</label>
+                            <input type="text" id="destination" required class="w-full bg-gray-50 border border-gray-300 rounded p-3 focus:outline-none focus:border-kong-pink transition-colors" placeholder="City/Zip">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Service Needed</label>
+                        <select id="service" class="w-full bg-gray-50 border border-gray-300 rounded p-3 focus:outline-none focus:border-kong-pink transition-colors">
+                            <option>Moving Service</option>
+                            <option>Packing Service</option>
+                            <option>House Staging</option>
+                            <option>Furniture Assembly</option>
+                            <option>Office/Apartment Move</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Details (Items, Floor, etc.)</label>
+                        <textarea id="details" rows="3" class="w-full bg-gray-50 border border-gray-300 rounded p-3 focus:outline-none focus:border-kong-pink transition-colors" placeholder="Example: 1 bedroom apartment, 2nd floor, no elevator..."></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-kong-pink text-white font-bold uppercase py-4 rounded hover:bg-pink-700 transition-colors shadow-lg flex items-center justify-center gap-2">
+                        Send to WhatsApp <i data-lucide="send" class="w-4 h-4"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script>
         lucide.createIcons();
+
+        // Modal Logic
+        function openModal() {
+            const modal = document.getElementById('quoteModal');
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('quoteModal');
+            modal.classList.add('hidden');
+        }
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            const modal = document.getElementById('quoteModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        // WhatsApp Sender Logic
+        function sendToWhatsapp(e) {
+            e.preventDefault();
+
+            // 1. Get Values
+            const name = document.getElementById('name').value;
+            const origin = document.getElementById('origin').value;
+            const destination = document.getElementById('destination').value;
+            const service = document.getElementById('service').value;
+            const details = document.getElementById('details').value;
+
+            // 2. Format Message
+            const message = `Hello King Kong Moving! My Name is ${name}, I just filled out the form on your website. Here are my moving details for a quote:\n\n%0A` +
+                            `*NEW QUOTE REQUEST\n%0A` +
+                            `*From:* ${origin}\n%0A` +
+                            `*To:* ${destination}\n%0A` +
+                            `*Service:* ${service}\n%0A` +
+                            `*Details:* ${details}\n`;
+
+            // 3. Redirect to WhatsApp
+            // REPLACE '15551234567' with your actual WhatsApp business number
+            const phoneNumber = '13239860554'; 
+            const url = `https://wa.me/${phoneNumber}?text=${message}`;
+
+            window.open(url, '_blank');
+            
+            // Optional: Close modal after sending
+            closeModal();
+        }
     </script>
 </body>
 </html>
